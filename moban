@@ -1,0 +1,26 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: z
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int main()
+{
+	#ifdef LOCAL
+		freopen("z.in","r",stdin);
+		freopen("z.out","w",stdout);
+	#endif
+	
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
