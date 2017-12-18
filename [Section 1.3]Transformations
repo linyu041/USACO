@@ -1,0 +1,105 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: transform
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int n;
+string s[11],c[11];
+string w[11],e[11];
+int flag;
+void Change()
+{
+	U(i,0,n-1)
+		U(j,0,n-1)
+			w[n-1-j][i]=e[i][j];
+	U(j,0,n-1)	e[j]=w[j];
+}
+int PD6()
+{
+	U(i,0,n-1)	if(w[i]!=s[i])	return -1;
+	return 6;
+}
+int PD1()
+{
+	U(i,0,n-1)	
+	{
+		w[i]=c[i];
+		e[i]=w[i];
+	}
+	U(i,1,3)
+	{
+		Change();
+		if(PD6()!=-1)	return i;
+	}
+	return -1;
+}
+int PD4()
+{
+	U(i,0,n-1)		w[i]=c[i];
+	U(i,0,n-1)
+	{
+		U(j,0,n/2)
+		{
+			swap(w[i],w[n-1-i]);
+		}
+	}
+	if(PD6()!=-1)	return 4;
+	return -1;
+}
+int PD5()
+{
+	U(i,0,n-1)		w[i]=c[i];
+	U(i,0,n-1)
+	{
+		U(j,0,n/2)
+		{
+			swap(w[i],w[n-1-i]);
+		}
+	}
+	U(i,0,n-1)	e[i]=w[i];
+	U(i,1,3)
+	{
+		Change();
+		if(PD6()!=-1)	return 5;
+	}
+	return -1;
+}
+int PD()
+{
+	int flag;
+	flag=PD1();
+	if(flag!=-1)	return flag;
+	flag=PD4();
+	if(flag!=-1)	return flag;
+	flag=PD5();
+	if(flag!=-1)	return flag;
+	U(i,0,n-1)		w[i]=c[i];
+	flag=PD6();
+	if(flag!=-1)	return flag;
+	return 7;
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("transform.in","r",stdin);
+		freopen("transform.out","w",stdout);
+	#endif
+	scanf("%d\n",&n);
+	U(i,0,n-1)	getline(cin,s[i]);
+	U(i,0,n-1)	getline(cin,c[i]);
+	int x=PD();
+	printf("%d\n",x);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
