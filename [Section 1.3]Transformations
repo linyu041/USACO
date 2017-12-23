@@ -46,9 +46,9 @@ int PD4()
 	U(i,0,n-1)		w[i]=c[i];
 	U(i,0,n-1)
 	{
-		U(j,0,n/2)
+		U(j,0,n/2-1)
 		{
-			swap(w[i],w[n-1-i]);
+			swap(w[i][j],w[i][n-1-j]);
 		}
 	}
 	if(PD6()!=-1)	return 4;
@@ -59,9 +59,9 @@ int PD5()
 	U(i,0,n-1)		w[i]=c[i];
 	U(i,0,n-1)
 	{
-		U(j,0,n/2)
+		U(j,0,n/2-1)
 		{
-			swap(w[i],w[n-1-i]);
+			swap(w[i][j],w[i][n-1-j]);
 		}
 	}
 	U(i,0,n-1)	e[i]=w[i];
