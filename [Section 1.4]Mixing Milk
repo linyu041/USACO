@@ -1,0 +1,53 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: milk
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int n,m;
+struct Man
+{
+	int p,a;
+}f[5005];
+inline bool cmp(Man x,Man y)
+{
+	return x.p<y.p;
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("milk.in","r",stdin);
+		freopen("milk.out","w",stdout);
+	#endif
+	scanf("%d%d",&n,&m);
+	U(i,1,m)	scanf("%d%d",&f[i].p,&f[i].a);
+	sort(f+1,f+1+m,cmp);
+	int i=1,sum=0;
+	while(n!=0)
+	{
+		if(f[i].a>=n)
+		{
+			sum+=n*f[i].p;
+			n=0;
+		}
+		else
+		{
+			sum+=f[i].a*f[i].p;
+			n-=f[i].a;
+		}
+		i++;
+	}
+	printf("%d\n",sum);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
