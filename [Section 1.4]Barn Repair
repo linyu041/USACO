@@ -1,0 +1,72 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: barn1
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int m,s,c;
+int a[205],tot,cnt;
+struct Interval
+{
+	int l,r,num;
+}f[205],g[205];
+bool cmp(Interval x,Interval y)
+{
+	return x.num>y.num;
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("barn1.in","r",stdin);
+		freopen("barn1.out","w",stdout);
+	#endif
+	scanf("%d%d%d",&m,&s,&c);
+	int x;
+	U(i,1,c)
+	{
+		scanf("%d",&x);
+		a[x]++;
+	}
+	int flag=0,ans=0;
+	U(i,1,s)
+	{
+		if(!flag&&a[i])
+		{
+			f[++tot].l=i;
+			flag=i;
+		}
+		else	if(flag&&!a[i])
+		{
+			f[tot].r=i-1;
+			flag=0;
+		}
+	}
+	if(f[tot].r==0)	f[tot].r=s;
+	for(int i=2;i<=tot;i++)
+	{
+		if(f[i].l-f[i-1].r!=1)
+		{
+			g[++cnt].l=f[i-1].r+1;
+			g[cnt].r=f[i].l-1;
+			g[cnt].num=g[cnt].r-g[cnt].l+1;
+		}
+	}
+	sort(g+1,g+1+cnt,cmp);
+	ans=f[tot].r-f[1].l+1;
+	if(m-1>cnt)	m=cnt+1;
+	U(i,1,m-1)	
+		ans-=g[i].num;
+	printf("%d\n",ans>0?ans:0);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
