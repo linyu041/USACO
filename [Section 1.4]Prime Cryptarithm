@@ -1,0 +1,80 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: crypt1
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int n,a[15],ans,b[15];
+inline bool PD(int x,int y)
+{
+	int flag=0;
+	while(x!=0)	
+	{
+		flag++;
+		if(!b[x%10])	return 0;
+		x/=10;
+	}
+	if(flag==y)	
+	{
+		return 1;
+	}
+	return 0;
+}
+void Calculate(int sum)
+{
+	int x;
+	U(i,1,n)
+	{
+		U(j,1,n)
+		{
+			x=sum*a[i]*10+sum*a[j];
+			if(PD(x,4)&&PD(sum*a[i],3)&&PD(sum*a[j],3))	
+			{
+				ans++;
+			}
+		}
+	}
+}
+void DDFS1(int step,int sum)
+{
+	if(step==4)	
+	{
+		Calculate(sum);
+	}
+	else
+	{
+		U(i,1,n)
+		{
+			DDFS1(step+1,sum*10+a[i]);
+		}
+	}
+
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("crypt1.in","r",stdin);
+		freopen("crypt1.out","w",stdout);
+	#endif
+	scanf("%d",&n);
+	int x;
+	U(i,1,n)
+	{
+		scanf("%d",&a[i]);
+		b[a[i]]=1;
+	}
+	DDFS1(1,0);
+	printf("%d\n",ans);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
