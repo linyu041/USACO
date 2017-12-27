@@ -6,54 +6,29 @@ TASK: combo
 #include<iostream>
 #include<algorithm>
 #include<cstdio>
-#include<set>
-#include<map>
 #include<string>
 using namespace std;
 #define LOCAL
 #define U(i,j,k) for(int i=j;i<=k;i++)
 #define D(i,j,k) for(int i=j;i>=k;i--)
-int n;
-int f[505];
+int n,ans;
 int g[105][105][105];
-int a[6],b[6],c[6],ans;
 void Solve(int x,int y,int z)
 {
-	a[1]=x;a[2]=f[x-1+2];a[3]=f[x-2+2];a[4]=f[x+1+2];a[5]=f[x+2+2];
-	b[1]=y;b[2]=f[y-1+2];b[3]=f[y-2+2];b[4]=f[y+1+2];b[5]=f[y+2+2];
-	c[1]=z;c[2]=f[z-1+2];c[3]=f[z-2+2];c[4]=f[z+1+2];c[5]=f[z+2+2];	
-}
-void DDFS()
-{
-	int sum;
-	U(i,1,5)
+	U(i,-2,2)
 	{
-		U(j,1,5)
+		U(j,-2,2)
 		{
-			U(k,1,5)
+			U(k,-2,2)
 			{
-				if(!g[a[i]][b[j]][c[k]]&&a[i]&&b[j]&&c[k])
+				if(!g[(x+i+2)%n][(y+j+2)%n][(z+k+2)%n])
 				{
 					ans++;
-					g[a[i]][b[j]][c[k]]=1;
+					g[(x+i+2)%n][(y+j+2)%n][(z+k+2)%n]=1;
 				}
-			}	
+			}
 		}
 	}
-}
-void InPut()
-{
-	scanf("%d",&n);
-	U(i,3,n)	f[i]=i-2;
-	f[1]=n-1;f[2]=n;	
-	U(i,n+1,n+n)	f[i]=i-n;
-	int x,y,z;
-	scanf("%d%d%d",&x,&y,&z);
-	Solve(x,y,z);
-	DDFS();
-	scanf("%d%d%d",&x,&y,&z);
-	Solve(x,y,z);
-	DDFS();
 }
 int main()
 {
@@ -61,7 +36,12 @@ int main()
 		freopen("combo.in","r",stdin);
 		freopen("combo.out","w",stdout);
 	#endif
-	InPut();
+	scanf("%d",&n);
+	int x,y,z;
+	scanf("%d%d%d",&x,&y,&z);
+	Solve(x,y,z);
+	scanf("%d%d%d",&x,&y,&z);
+	Solve(x,y,z);
 	printf("%d\n",ans);
 	#ifdef LOCAL
 		fclose(stdin);
