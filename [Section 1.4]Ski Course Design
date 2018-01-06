@@ -1,0 +1,50 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: skidesign
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define Inf (1<<30)
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int n,maxh,ans=Inf;
+int a[1005];
+inline int Sqr(int x)
+{
+    return x*x;
+}
+int main()
+{
+    #ifdef LOCAL
+        freopen("skidesign.in","r",stdin);
+        freopen("skidesign.out","w",stdout);
+    #endif
+    scanf("%d",&n);
+    U(i,1,n)
+    {
+        scanf("%d",a+i);
+        maxh=max(maxh,a[i]);
+    }	
+    int sum;
+    U(h,0,maxh)
+    {
+        sum=0;
+        U(i,1,n)
+        {
+            if(a[i]<h&&h-a[i]>17)	sum+=Sqr(h-17-a[i]);
+            if(a[i]>h)	sum+=Sqr(h-a[i]);
+        }
+        ans=min(ans,sum);
+    }
+    printf("%d\n",ans);
+    #ifdef LOCAL
+        fclose(stdin);
+        fclose(stdout);
+    #endif
+    return 0;
+}
