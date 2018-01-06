@@ -1,0 +1,89 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: ariprog
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(register int i=j;i<=k;++i)
+#define D(i,j,k) for(register int i=j;i>=k;--i)
+int n,m,f[125105],g[125105];
+int cnt,tot;
+struct Data
+{
+	int a,b;
+}h[40005];
+void Shai()
+{
+	g[++cnt]=0;
+	f[0]=1;
+	U(i,1,m)
+	{
+		U(j,0,m)
+		{
+			if(!f[i*i+j*j])
+			{
+				g[++cnt]=i*i+j*j;
+				f[g[cnt]]=1;
+			}
+		}
+	}
+}
+inline bool PD(int a,int b)
+{
+	int x=a+b;
+	U(i,1,n-1)
+	{
+		if(!f[x])	return false;
+		x+=b;
+	}
+	return true;
+}
+inline bool cmp(Data x,Data y)
+{
+	if(x.b!=y.b)	return x.b<y.b;
+	else			return x.a<y.a;
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("ariprog.in","r",stdin);
+		freopen("ariprog.out","w",stdout);
+	#endif
+	scanf("%d%d",&n,&m);
+	Shai();
+	sort(g+1,g+1+cnt);
+	int maxx=2*m*m;
+	int maxb=(g[cnt]-g[1])/(n-1);
+	U(b,1,maxb)
+	{
+		U(i,1,cnt)
+		{
+			if(g[i]+(n-1)*b>maxx)	break;
+			if(PD(g[i],b))
+			{
+				h[++tot].a=g[i];
+				h[tot].b=b;
+			}
+		}
+		}
+	if(!tot)
+	{
+		cout<<"NONE\n";
+		return 0;
+	}
+	sort(h+1,h+tot+1,cmp);
+	U(i,1,tot)
+	{
+		printf("%d %d\n",h[i].a,h[i].b);
+	}
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
