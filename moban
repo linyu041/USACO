@@ -1,8 +1,3 @@
-/*
-ID: linyu041
-LANG: C++
-TASK: z
-*/
 #include<iostream>
 #include<algorithm>
 #include<cstdio>
@@ -12,17 +7,13 @@ using namespace std;
 #define Inf (1<<30)
 #define U(i,j,k) for(register int i=j;i<=k;++i)
 #define D(i,j,k) for(register int i=j;i>=k;--i)
-void InPut()
-{
-	
-}
 int main()
 {
 	#ifdef LOCAL
 		freopen("z.in","r",stdin);
 		freopen("z.out","w",stdout);
 	#endif
-	InPut();
+	
 	#ifdef LOCAL
 		fclose(stdin);
 		fclose(stdout);
