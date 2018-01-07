@@ -1,0 +1,40 @@
+/*
+ ID: linyu041
+ LANG: C++
+ TASK: numtri
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define Inf (1<<30)
+#define U(i,j,k) for(register int i=j;i<=k;++i)
+#define D(i,j,k) for(register int i=j;i>=k;--i)
+int a[1005][1005];
+int n;
+int main()
+{
+	#ifdef LOCAL
+		freopen("numtri.in","r",stdin);
+		freopen("numtri.out","w",stdout);
+	#endif
+	scanf("%d",&n);
+	U(i,1,n)
+	{
+		U(j,1,i)
+			scanf("%d",&a[i][j]);
+	}
+	D(i,n-1,1)
+	{
+		U(j,1,i)
+			a[i][j]+=max(a[i+1][j],a[i+1][j+1]);
+	}
+	printf("%d\n",a[1][1]);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
