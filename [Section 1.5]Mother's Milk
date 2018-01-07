@@ -1,0 +1,51 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: milk3
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int a,b,c,f[25];
+int t[24][24][24];
+void Milk(int x,int y,int z)
+{
+	if(t[x][y][z])	return;//剪枝
+	if(!x)	f[z]=1;
+	t[x][y][z]=1;
+	(x+z>a)?Milk(a,y,x+z-a):Milk(x+z,y,0);//c-->a
+	(y+z>b)?Milk(x,b,y+z-b):Milk(x,y+z,0);//c-->b
+	(x+z>c)?Milk(x+z-c,y,c):Milk(0,y,x+z);//a-->c
+	(y+z>c)?Milk(x,y+z-c,c):Milk(x,0,y+z);//b-->c
+	(x+y>a)?Milk(a,x+y-a,z):Milk(x+y,0,z);//b-->a
+	(x+y>b)?Milk(x+y-b,b,z):Milk(0,x+y,z);//a-->b
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("milk3.in","r",stdin);
+		freopen("milk3.out","w",stdout);
+	#endif
+	int flag=0;
+	scanf("%d%d%d",&a,&b,&c);
+	Milk(0,0,c);
+	U(i,0,20)
+	{
+		if(f[i])
+		{
+			if(!flag)	printf("%d",i),flag=1;
+			else		printf(" %d",i);
+		}
+	}
+	printf("\n");
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
