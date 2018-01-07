@@ -1,0 +1,52 @@
+/*
+ ID: linyu041
+ LANG: C++
+ TASK: sprime
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cmath>
+#include<string>
+using namespace std;
+#define LOCAL
+#define Inf (1<<30)
+#define U(i,j,k) for(register int i=j;i<=k;++i)
+#define D(i,j,k) for(register int i=j;i>=k;--i)
+int f[]={0,2,3,5,7},n;
+inline bool PD(int x)
+{
+	int e=sqrt(x);
+	U(i,2,e)
+	{
+		if(x%i==0)	return false;
+	}
+	return true;
+}
+void DDFS(int step,int sum)
+{	
+	for(register int i=1;i<=9;i+=2)
+	{
+		if(PD(sum*10+i))	
+		{
+			if(step+1<=n)	DDFS(step+1,sum*10+i);
+			else	if(step==n)	printf("%d\n",sum*10+i);
+		}
+	}
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("sprime.in","r",stdin);
+		freopen("sprime.out","w",stdout);
+	#endif
+	scanf("%d",&n);
+  if(n==1)  cout<<"2 3 5 7\n";
+	U(i,1,4)
+		DDFS(2,f[i]);
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
