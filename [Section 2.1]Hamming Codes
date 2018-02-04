@@ -1,0 +1,103 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: hamming 
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int N,B,D,maxx;
+int a[80],flag;
+bool PD(int x,int num)
+{
+	int y,t=0;
+	U(i,1,num-1)
+	{
+		y=x^a[i];
+		t=0;
+		while(y!=0)
+		{
+			if(y%2==1)
+			{
+				t++;
+			}
+			y>>=1;
+		}
+		if(t<D)	return false;
+	}
+	return true;
+} 
+void DDFS(int now,int num)
+{
+	U(i,now,maxx)
+	{
+		if(flag)	return;
+		if(PD(i,num))
+		{
+			a[num]=i;
+			if(num==N)	
+			{
+				flag=1;
+				return;
+			}
+			DDFS(i+1,num+1);
+		}
+		if(flag)	return;
+	}
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("hamming.in","r",stdin);
+		freopen("hamming.out","w",stdout);
+	#endif
+	scanf("%d%d%d",&N,&B,&D);
+	int t=1;
+	U(i,1,B)
+	{
+		maxx+=t;
+		t<<=1;
+	}
+	DDFS(0,1);
+	int L=N%10!=0?N/10+1:N/10;
+	U(i,0,L-1)
+	{
+		if(i!=L-1)
+		{
+			U(j,1,9)
+			{
+				printf("%d ",a[i*10+j]);
+			}
+			printf("%d\n",a[i*10+10]);
+		}
+		else
+		{
+			if(N%10!=0)
+			{
+				U(j,1,N%10-1)
+				{
+					printf("%d ",a[i*10+j]);
+				}
+				printf("%d\n",a[i*10+N%10]);
+			}
+			else
+			{
+				U(j,1,9)
+				{
+					printf("%d ",a[i*10+j]);
+				}
+				printf("%d\n",a[i*10+10]);
+			}
+		}
+	}
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
