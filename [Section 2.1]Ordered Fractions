@@ -1,0 +1,58 @@
+/*
+ ID: linyu041
+ LANG: C++
+ TASK: frac1
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+//#define LOCAL
+#define Inf (1<<30)
+#define U(i,j,k) for(int i=j;i<=k;++i)
+#define D(i,j,k) for(int i=j;i>=k;--i)
+struct Data
+{
+    int a,b;
+}f[22765];
+int n,cnt;
+int Gcd(int x,int y)
+{
+    return (y!=0)?Gcd(y,x%y):x;
+}
+bool cmp(Data x,Data y)
+{
+    return x.a*y.b<=y.a*x.b;
+}
+int main()
+{
+    #ifdef LOCAL
+        freopen("frac1.in","r",stdin);
+        freopen("frac1.out","w",stdout);
+    #endif
+    scanf("%d",&n);
+    printf("0/1\n");
+    U(i,1,n)
+    {
+        D(j,n,i+1)
+        {
+            if(Gcd(i,j)==1)
+            {
+                f[++cnt].a=i;
+                f[cnt].b=j;
+            }
+        }
+    }
+    sort(f+1,f+1+cnt,cmp);
+    U(i,1,cnt)
+    {
+        printf("%d/%d\n",f[i].a,f[i].b);
+    }
+    printf("1/1\n");
+    #ifdef LOCAL
+        fclose(stdin);
+        fclose(stdout);
+    #endif
+    return 0;
+}
