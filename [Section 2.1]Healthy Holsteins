@@ -1,0 +1,79 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: holstein
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(register int i=j;i<=k;++i)
+#define D(i,j,k) for(register int i=j;i>=k;--i)
+int V,G,st[26],now[26],a[16][26],ans=(1<<30),c[16],d[16];
+void InPut()
+{
+	scanf("%d",&V);
+	U(i,1,V)	scanf("%d",&st[i]);
+	scanf("%d",&G);
+	U(i,1,G)
+		U(j,1,V)
+			scanf("%d",&a[i][j]);
+}
+int dlen;
+void Print(int x)
+{
+	U(i,1,dlen)	d[i]=0;
+	U(i,1,x)	d[i]=c[i];
+	dlen=x;
+}
+int PD()
+{
+	U(i,1,V)	
+	{
+		if(now[i]<st[i])	return false;
+	}
+	return true;
+}
+void DDFS(int step,int la)
+{
+	U(i,la,G)
+	{
+		c[step]=i;
+		U(j,1,V)	now[j]+=a[i][j];
+		if(PD()&&ans>step)
+		{
+			ans=min(ans,step);
+			Print(step);
+			U(j,1,V)	now[j]-=a[i][j];
+			return;
+		}
+		if(step+1<ans)	
+			DDFS(step+1,i+1);
+		c[step]=0;
+		U(j,1,V)	now[j]-=a[i][j];
+	}
+}
+void Solve()
+{
+	DDFS(1,1);
+	printf("%d",ans);
+	U(i,1,ans)
+		printf(" %d",d[i]);
+	printf("\n");
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("holstein.in","r",stdin);
+		freopen("holstein.out","w",stdout);
+	#endif
+	InPut();
+	Solve(); 
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
