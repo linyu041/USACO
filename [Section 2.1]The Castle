@@ -1,0 +1,137 @@
+/*
+ID: linyu041
+LANG: C++
+TASK: castle
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+#include<string>
+using namespace std;
+#define LOCAL
+#define U(i,j,k) for(int i=j;i<=k;i++)
+#define D(i,j,k) for(int i=j;i>=k;i--)
+int tot,m,n,ans=-1,vis[501][501],a[501][501],f[250001];
+int xi[]={0,-1,0,1},yi[]={-1,0,1,0};
+struct N
+{
+	int x,y;
+};
+queue<N>	q;
+int Wall(int sum,int x)
+{
+	int h;
+	while(sum!=0)
+	{
+		h=(sum&(-sum));
+		if(h==x)	return 1;
+		sum-=h;
+	}
+	return 0;
+}
+int PD(int x,int y,int t)
+{
+	if(vis[x+xi[t]][y+yi[t]]!=0)	return 0;
+	if(!Wall(a[x][y],(1<<t)))		
+		if(x+xi[t]>0&&x+xi[t]<=n&&y+yi[t]>0&&y+yi[t]<=m)	return 1;
+	return 0;
+}
+void BBFS(int x,int y)
+{
+	++tot;
+	vis[x][y]=tot;
+	N t,w;
+	t.x=x;t.y=y;
+	q.push(t);
+	int sum=1;
+	while(!q.empty())
+	{
+		t=q.front();
+		q.pop();
+		U(i,0,3)
+		{
+			if(PD(t.x,t.y,i))
+			{
+				w.x=t.x+xi[i];
+				w.y=t.y+yi[i];
+				vis[w.x][w.y]=tot;
+				++sum;
+				q.push(w);
+			}
+		} 
+	} 
+	f[tot]=sum;
+	ans=max(sum,ans);
+}
+void Pre_Solve()
+{
+	U(i,1,n)
+		U(j,1,m)
+			if(vis[i][j]==0)
+				BBFS(i,j);
+	printf("%d\n",tot);
+	printf("%d\n",ans);
+	ans=-1;
+}
+char c;
+int ansx,ansy;
+void Solve()
+{
+	U(i,1,n)
+	{
+		U(j,1,m)
+		{
+			if(i-1>0&&Wall(a[i][j],(1<<1))&&vis[i-1][j]!=vis[i][j])
+			{
+				if(ans<f[vis[i-1][j]]+f[vis[i][j]])
+				{
+					ans=f[vis[i-1][j]]+f[vis[i][j]];
+					ansx=i;ansy=j;
+					c='N';
+				}
+				else	if(ans==f[vis[i-1][j]]+f[vis[i][j]]&&j<=ansy)
+				{
+					ansx=i;ansy=j;c='N';
+				}
+			}//North
+			if(j+1<=m&&Wall(a[i][j],(1<<2))&&vis[i][j+1]!=vis[i][j])
+			{
+				if(ans<f[vis[i][j+1]]+f[vis[i][j]])
+				{
+					ans=f[vis[i][j+1]]+f[vis[i][j]];
+					ansx=i;ansy=j;c='E';
+				}
+				if(ans==f[vis[i][j+1]]+f[vis[i][j]]&&j<=ansy)
+				{
+					if(j<ansy)
+					{
+						ansx=i;ansy=j;c='E';
+					}
+					else	if(j==ansy&&i!=ansx)
+					{
+						ansx=i;ansy=j;c='E';
+					}
+				}
+			}//East
+		}
+	}
+	printf("%d\n%d %d %c\n",ans,ansx,ansy,c);
+}
+int main()
+{
+	#ifdef LOCAL
+		freopen("castle.in","r",stdin);
+		freopen("castle.out","w",stdout);
+	#endif
+	scanf("%d%d",&m,&n);
+	U(i,1,n)	U(j,1,m)	scanf("%d",&a[i][j]);
+	Pre_Solve();
+	Solve(); 
+	#ifdef LOCAL
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
