@@ -1,0 +1,94 @@
+/*
+ ID: linyu041
+ LANG: C++
+ TASK: cowtour
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<queue>
+#include<cmath>
+#include<cstring>
+#include<string>
+using namespace std;
+#define File
+#define U(i,j,k) for(register int i=j;i<=k;++i)
+#define D(i,j,k) for(register int i=j;i>=k;--i)
+struct Data
+{
+	int x,y;
+}a[155];
+double dis[155][155],l[155],r;
+int n;
+char s[155];
+double Dis(int i,int j)
+{
+	double x=1.0*(a[i].x-a[j].x),y=1.0* (a[i].y-a[j].y);
+	return sqrt(x*x+y*y);
+}
+const double Maxx=1000000000;
+int main()
+{
+	#ifdef File
+		freopen("cowtour.in","r",stdin);
+		freopen("cowtour.out","w",stdout);
+	#endif
+	scanf("%d",&n);
+	int x,y;
+	U(i,1,n)		scanf("%d%d",&a[i].x,&a[i].y);
+	getchar();
+	U(i,1,n)
+	{
+		scanf("%s\n",s+1);
+		U(j,1,n)
+		{
+			if(s[j]=='1')
+				dis[i][j]=Dis(i,j);
+			else	
+				dis[i][j]=Maxx;
+		}
+		dis[i][i]=0;
+	}
+	U(k,1,n)
+	U(i,1,n)
+		if(i!=k)
+		{
+			U(j,1,n)
+				if(i!=j)
+				{	
+					if(dis[i][j]>dis[i][k]+dis[k][j])				
+						dis[i][j]=dis[i][k]+dis[k][j];
+				}
+					
+		}
+			
+	U(i,1,n)
+	{
+		U(j,1,n)
+		{
+			if(i!=j&&dis[i][j]<Maxx)
+			{
+				l[i]=max(dis[i][j],l[i]);
+				r=max(dis[i][j],r);
+			}
+		}
+	}
+	double ans=(1<<30);
+	U(i,1,n)
+	{
+		U(j,1,n)
+		{
+			if(i!=j&&dis[i][j]>=Maxx)
+			{
+				ans=min(ans,Dis(i,j)+l[i]+l[j]);	
+			}
+		}
+	}
+	ans=max(ans,r);
+	printf("%.6f\n",ans);
+	#ifdef File
+		fclose(stdin);
+		fclose(stdout);
+	#endif
+	return 0;
+}
